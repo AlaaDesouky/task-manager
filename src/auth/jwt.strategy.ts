@@ -4,12 +4,15 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtPayload } from './jwt-payload.interface';
 import { User } from './user.entity';
 import { UsersRepository } from './users.repository';
+import * as config from 'config'
+
+const jwtConfig = config.get('jwt')
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private user: UsersRepository) {
     super({
-      secretOrKey: 'toBeChangedLater',
+      secretOrKey: process.env.JWT_SECRET || jwtConfig.secret,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
     })
   }

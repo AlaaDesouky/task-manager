@@ -37,8 +37,11 @@ export class UsersRepository {
 
   async loginUser(authCredentialsDto: AuthCredentialsDto): Promise<{ accessToken: string }> {
     const { username, password } = authCredentialsDto
+    const shit = await this.getUser(username)
+    console.log(shit)
     try {
       const user: User = await this.usersRepository.findOne({ where: { username }, select: ['password'] })
+      console.log(username, password, user)
       const isValidPassword: boolean = await this.comparePassword(password, user.password)
 
       if (user && isValidPassword) {
